@@ -19,8 +19,11 @@ const sendLeadConfirmation = async (leadData) => {
         if (email) {
             const clientMsg = {
                 to: email,
-                from: process.env.EMAIL_FROM,
-                subject: 'Thank you for contacting Mannat Micro Concrete',
+                from: {
+                    email: process.env.EMAIL_FROM,
+                    name: 'Mannat Micro Concrete'
+                },
+                subject: 'Thank you for your inquiry - Mannat Micro Concrete',
                 html: `
                     <div style="font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee;">
                         <h2 style="color: #d4af37; text-transform: uppercase;">Hello ${name},</h2>
@@ -37,9 +40,13 @@ const sendLeadConfirmation = async (leadData) => {
 
         // 2. Alert Email to Admin
         const adminMsg = {
-            to: process.env.EMAIL_FROM, // Send alert to admin
-            from: process.env.EMAIL_FROM,
-            subject: `🚀 NEW LEAD: ${name} [Score: ${leadData.score || 0}]`,
+            to: process.env.EMAIL_FROM,
+            from: {
+                email: process.env.EMAIL_FROM,
+                name: 'Mannat CRM'
+            },
+            replyTo: email,
+            subject: `New Lead Inquiry: ${name}`,
             html: `
                 <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f0f0; padding: 40px; color: #1a1a1a;">
                     <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
@@ -112,8 +119,11 @@ const sendOTPEmail = async (email, otp) => {
 
     const msg = {
         to: email,
-        from: process.env.EMAIL_FROM,
-        subject: '🔒 Password Reset OTP - Mannat Admin',
+        from: {
+            email: process.env.EMAIL_FROM,
+            name: 'Mannat Admin'
+        },
+        subject: 'Verification Code - Mannat Admin',
         html: `
             <div style="font-family: 'Segoe UI', sans-serif; max-width: 500px; margin: auto; padding: 40px; background: #000; border: 1px solid #d4af37; border-radius: 20px; color: #fff; text-align: center;">
                 <h2 style="color: #d4af37; text-transform: uppercase; letter-spacing: 2px;">Verification Code</h2>
