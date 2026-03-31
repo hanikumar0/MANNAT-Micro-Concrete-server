@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
 });
 
 // Admin: Create project
-router.post('/', [auth, upload.array('images', 5)], async (req, res) => {
+router.post('/', [auth, upload.array('images', 10)], async (req, res) => {
     try {
         console.log('--- Create Project Request (MongoDB) ---');
         const { title, description, category, client, location, year, area, tags, featured } = req.body;
@@ -41,7 +41,8 @@ router.post('/', [auth, upload.array('images', 5)], async (req, res) => {
         for (const file of files) {
             const result = await cloudinary.uploader.upload(file.path, {
                 folder: 'mannat_projects',
-                use_filename: true
+                use_filename: true,
+                resource_type: 'auto'
             });
             imageUrls.push({
                 url: result.secure_url,
